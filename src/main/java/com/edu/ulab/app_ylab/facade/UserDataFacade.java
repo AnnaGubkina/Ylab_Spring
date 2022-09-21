@@ -96,6 +96,7 @@ public class UserDataFacade {
     }
 
     public UserBookResponse getUserWithBooks(Long userId) {
+        if (userId == null) throw new NotFoundException("Id is null");
         log.info("Got a request to get a user with books: {}", userId);
         UserDto userDto = userService.getUserById(userId);
         if (userDto == null) throw new NotFoundException("There is no user with id " + userId + " in storage");

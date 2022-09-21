@@ -5,7 +5,7 @@ import com.edu.ulab.app_ylab.repository.UserRepository;
 import com.edu.ulab.app_ylab.storage.Storage;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -33,7 +33,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public Map<Long, User> getAllUsers() {
         return storage.getAllUsers();
     }
 

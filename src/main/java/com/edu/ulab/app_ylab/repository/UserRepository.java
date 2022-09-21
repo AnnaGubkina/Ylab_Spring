@@ -1,10 +1,8 @@
 package com.edu.ulab.app_ylab.repository;
 
-import com.edu.ulab.app_ylab.dto.UserDto;
 import com.edu.ulab.app_ylab.entity.User;
-import io.micrometer.core.instrument.Tags;
 
-import java.util.List;
+import java.util.Map;
 
 public interface UserRepository {
 
@@ -14,7 +12,7 @@ public interface UserRepository {
 
     User updateUser(User user);
 
-    List<User> getAllUsers();
+    Map<Long, User> getAllUsers();
 
     void deleteUserById(Long id);
 
