@@ -30,12 +30,14 @@ public class BookServiceImpl implements BookService {
         Book book = bookMapper.bookDtoToBookEntity(bookDto);
         book.setId(id);
         bookRepository.saveBook(book);
+        log.info("Created book: {}", book);
         return getBookById(book.getId());
     }
 
     @Override
     public BookDto updateBook(BookDto bookDto, Long userId) {
         List<BookDto> dtoList = getBookListByUser(userId);
+        log.info("Get a list of BookDto: {}", dtoList);
         for (BookDto element : dtoList)
             if (element.getTitle().equals(bookDto.getTitle()) && element.getAuthor().equals(bookDto.getAuthor())) {
                 return element;
@@ -46,12 +48,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto getBookById(Long id) {
         Book book = bookRepository.getBookById(id);
+        log.info("Get book by id: {}", book);
         return bookMapper.bookEntityToBookDto(book);
     }
 
     @Override
     public void deleteBookById(Long id) {
         bookRepository.deleteBookById(id);
+        log.info("Book deleted: {}", id);
 
     }
 

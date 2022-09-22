@@ -1,5 +1,7 @@
 package com.edu.ulab.app_ylab.web.handler;
 
+import com.edu.ulab.app_ylab.exception.NoSuchBookException;
+import com.edu.ulab.app_ylab.exception.NoSuchUserException;
 import com.edu.ulab.app_ylab.exception.NotFoundException;
 import com.edu.ulab.app_ylab.web.response.BaseWebResponse;
 import lombok.NonNull;
@@ -16,6 +18,20 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<BaseWebResponse> handleNotFoundExceptionException(@NonNull final NotFoundException exc) {
+        log.error(exc.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new BaseWebResponse(createErrorMessage(exc)));
+    }
+
+    @ExceptionHandler(NoSuchBookException.class)
+    public ResponseEntity<BaseWebResponse> handleNotFoundExceptionException(@NonNull final NoSuchBookException exc) {
+        log.error(exc.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new BaseWebResponse(createErrorMessage(exc)));
+    }
+
+    @ExceptionHandler(NoSuchUserException.class)
+    public ResponseEntity<BaseWebResponse> handleAlreadyExistExceptionException(@NonNull final NoSuchUserException exc) {
         log.error(exc.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new BaseWebResponse(createErrorMessage(exc)));

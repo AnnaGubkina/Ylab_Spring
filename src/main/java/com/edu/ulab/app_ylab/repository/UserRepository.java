@@ -10,7 +10,7 @@ public interface UserRepository {
 
     User getUserById(Long id);
 
-    User updateUser(User user);
+    void updateUser(User user);
 
     Map<Long, User> getAllUsers();
 

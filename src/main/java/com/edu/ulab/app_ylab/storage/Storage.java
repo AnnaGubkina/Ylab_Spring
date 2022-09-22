@@ -12,15 +12,6 @@ import java.util.stream.Collectors;
  * The function of this class to contain all users and all books that users have
  * When saving books to storage, they are also highlighted in  one more list in the user's entity
  * This is done so that we have access to list of all application books by identifier, and a list of books of specific user.
- * <p>
- * In this spring module we can:
- * 1) create a user with associated books.
- * 2) edit this user with books by id:
- * - you can edit fullName, title, age for the user himself
- * - you can add new books to the user's list
- * 3) get the user and his books by id
- * 4) Remove the user along with the books. At the same time, books will also be deleted from the general list. Since this list
- * contains books with the userId of the user.
  */
 
 @Component
@@ -37,12 +28,8 @@ public class Storage {
         return users.get(id);
     }
 
-    public User updateUser(User user) {
-        User updatedUser = getUser(user.getId());
-        updatedUser.setFullName(user.getFullName());
-        updatedUser.setTitle(user.getTitle());
-        updatedUser.setAge(user.getAge());
-        return updatedUser;
+    public void updateUser(User user) {
+        users.put(user.getId(), user);
     }
 
     public Map<Long, User> getAllUsers() {

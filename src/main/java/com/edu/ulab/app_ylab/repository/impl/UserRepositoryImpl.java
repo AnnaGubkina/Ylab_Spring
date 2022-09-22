@@ -24,12 +24,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getUserById(Long id) {
-      return storage.getUser(id);
+        return storage.getUser(id);
     }
 
     @Override
-    public User updateUser(User user) {
-      return storage.updateUser(user);
+    public void updateUser(User user) {
+        storage.updateUser(user);
     }
 
     @Override
