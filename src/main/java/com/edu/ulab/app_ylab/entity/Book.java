@@ -20,10 +20,10 @@ public class Book {
 
     private Long userId;
 
-    @NotEmpty(message = "Title field must not be empty")
+    @NotEmpty(message = "Title field must not be empty in Book")
     private String title;
 
-    @NotEmpty(message = "Author field must not be empty")
+    @NotEmpty(message = "Author field must not be empty in Book")
     private String author;
 
     @Min(value = 2, message = "pageCount must be greater than 1")
