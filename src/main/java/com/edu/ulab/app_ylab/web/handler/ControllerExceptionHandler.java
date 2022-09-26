@@ -37,6 +37,7 @@ public class ControllerExceptionHandler {
                 .body(new BaseWebResponse(createErrorMessage(exc)));
     }
 
+
     private String createErrorMessage(Exception exception) {
         final String message = exception.getMessage();
         log.error(ExceptionHandlerUtils.buildErrorMessage(exception));

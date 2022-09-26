@@ -1,14 +1,14 @@
 package com.edu.ulab.app_ylab.mapper;
 
 import com.edu.ulab.app_ylab.dto.UserDto;
-import com.edu.ulab.app_ylab.entity.User;
+import com.edu.ulab.app_ylab.entity.Person;
 import com.edu.ulab.app_ylab.web.request.UserRequest;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-09-19T21:07:24+0300",
+    date = "2022-09-26T14:38:24+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 18.0.2 (Oracle Corporation)"
 )
 @Component
@@ -45,33 +45,33 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public User userDtoToUserEntity(UserDto userDto) {
+    public Person personDtoToUserEntity(UserDto userDto) {
         if ( userDto == null ) {
             return null;
         }
 
-        User user = new User();
+        Person person = new Person();
 
-        user.setId( userDto.getId() );
-        user.setFullName( userDto.getFullName() );
-        user.setTitle( userDto.getTitle() );
-        user.setAge( userDto.getAge() );
+        person.setId( userDto.getId() );
+        person.setFullName( userDto.getFullName() );
+        person.setTitle( userDto.getTitle() );
+        person.setAge( userDto.getAge() );
 
-        return user;
+        return person;
     }
 
     @Override
-    public UserDto userEntityToUserDto(User user) {
-        if ( user == null ) {
+    public UserDto personEntityToUserDto(Person person) {
+        if ( person == null ) {
             return null;
         }
 
         UserDto userDto = new UserDto();
 
-        userDto.setId( user.getId() );
-        userDto.setFullName( user.getFullName() );
-        userDto.setTitle( user.getTitle() );
-        userDto.setAge( user.getAge() );
+        userDto.setId( person.getId() );
+        userDto.setFullName( person.getFullName() );
+        userDto.setTitle( person.getTitle() );
+        userDto.setAge( person.getAge() );
 
         return userDto;
     }

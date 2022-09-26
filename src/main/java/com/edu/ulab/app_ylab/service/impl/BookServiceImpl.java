@@ -7,8 +7,17 @@ import com.edu.ulab.app_ylab.repository.BookRepository;
 import com.edu.ulab.app_ylab.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+
+/**
+ * This class contains the implementation of methods using Hibernate:
+ * 1) createBook
+ * 2) updateBook
+ * 3) getBookById
+ * 4) deleteBookById
+ * 5) getBookListByUser
+ */
+
 
 @Slf4j
 @Service
@@ -17,7 +26,6 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     private final BookRepository bookRepository;
 
-    public static Long BOOK_ID_GENERATOR = 0L;
 
     public BookServiceImpl(BookMapper bookMapper, BookRepository bookRepository) {
         this.bookMapper = bookMapper;
@@ -26,12 +34,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto createBook(BookDto bookDto) {
-        Long id = ++BOOK_ID_GENERATOR;
         Book book = bookMapper.bookDtoToBookEntity(bookDto);
-        book.setId(id);
-        bookRepository.saveBook(book);
-        log.info("Created book: {}", book);
-        return getBookById(book.getId());
+        log.info("Mapped book: {}", book);
+        Book savedBook = bookRepository.save(book);
+        log.info("Saved book: {}", savedBook);
+        return bookMapper.bookEntityToBookDto(savedBook);
     }
 
     @Override
@@ -47,21 +54,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getBookById(Long id) {
-        Book book = bookRepository.getBookById(id);
+        Book book = bookRepository.findBookById(id);
         log.info("Get book by id: {}", book);
         return bookMapper.bookEntityToBookDto(book);
     }
 
     @Override
     public void deleteBookById(Long id) {
-        bookRepository.deleteBookById(id);
-        log.info("Book deleted: {}", id);
-
+        bookRepository.deleteById(id);
+        log.info("Deleted book with id: {}", id);
     }
 
     public List<BookDto> getBookListByUser(Long userId) {
-        return bookRepository.getBookListByUser(userId).stream()
+        return bookRepository.findBooksByUserIdEquals(userId).stream()
                 .map(bookMapper::bookEntityToBookDto)
                 .toList();
+
     }
 }

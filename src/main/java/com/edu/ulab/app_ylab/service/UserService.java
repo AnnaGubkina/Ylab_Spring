@@ -1,7 +1,9 @@
 package com.edu.ulab.app_ylab.service;
 
 import com.edu.ulab.app_ylab.dto.UserDto;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserService {
     UserDto createUser(UserDto userDto);
 

@@ -7,13 +7,14 @@ import com.edu.ulab.app_ylab.exception.NoSuchUserException;
 import com.edu.ulab.app_ylab.exception.NotFoundException;
 import com.edu.ulab.app_ylab.mapper.BookMapper;
 import com.edu.ulab.app_ylab.mapper.UserMapper;
-import com.edu.ulab.app_ylab.service.BookService;
-import com.edu.ulab.app_ylab.service.UserService;
+import com.edu.ulab.app_ylab.service.impl.BookServiceImpl;
+import com.edu.ulab.app_ylab.service.impl.UserServiceImpl;
 import com.edu.ulab.app_ylab.web.request.UserBookRequest;
 import com.edu.ulab.app_ylab.web.response.UserBookResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,13 +32,13 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class UserDataFacade {
-    private final UserService userService;
-    private final BookService bookService;
+    private final UserServiceImpl userService;
+    private final BookServiceImpl bookService;
     private final UserMapper userMapper;
     private final BookMapper bookMapper;
 
-    public UserDataFacade(UserService userService,
-                          BookService bookService,
+    public UserDataFacade(UserServiceImpl userService,
+                          BookServiceImpl bookService,
                           UserMapper userMapper,
                           BookMapper bookMapper) {
         this.userService = userService;
@@ -46,6 +47,7 @@ public class UserDataFacade {
         this.bookMapper = bookMapper;
     }
 
+    @Transactional
     public UserBookResponse createUserWithBooks(UserBookRequest userBookRequest) {
         log.info("Got a request to create a user with books: {}", userBookRequest);
         UserDto userDto = userMapper.userRequestToUserDto(userBookRequest.getUserRequest());
@@ -72,16 +74,17 @@ public class UserDataFacade {
                 .build();
     }
 
+    @Transactional
     public UserBookResponse updateUserWithBooks(UserBookRequest userBookRequest, Long userId) {
         log.info("Got a request to update a user with books: {}", userBookRequest);
         if (userService.getUserById(userId) == null) {
-            throw new NoSuchUserException("There is no user with id " + userId + " in storage");
+            throw new NoSuchUserException("There is no user with id " + userId + " in database");
         }
         UserDto userDto = userMapper.userRequestToUserDto(userBookRequest.getUserRequest());
         log.info("Mapped user request: {}", userDto);
 
         UserDto updatedUser = userService.updateUser(userDto, userId);
-        log.info("Updated user: {}", updatedUser);
+        log.info("Updated user from database: {}", updatedUser);
 
         userBookRequest.getBookRequests()
                 .stream()
@@ -105,11 +108,12 @@ public class UserDataFacade {
 
     }
 
+    @Transactional
     public UserBookResponse getUserWithBooks(Long userId) {
         if (userId == null) throw new NotFoundException("Id is null");
         log.info("Got a request to get a user with books: {}", userId);
         UserDto userDto = userService.getUserById(userId);
-        if (userDto == null) throw new NoSuchUserException("There is no user with id " + userId + " in storage");
+        if (userDto == null) throw new NoSuchUserException("There is no user with id " + userId + " in database");
         List<Long> bookIdList = bookService.getBookListByUser(userId).stream()
                 .filter(Objects::nonNull)
                 .map(BookDto::getId)
@@ -122,12 +126,13 @@ public class UserDataFacade {
                 .build();
     }
 
+    @Transactional
     public void deleteUserWithBooks(Long userId) {
         log.info("Got a request to delete a user with books: {}", userId);
         UserDto userDto = userService.getUserById(userId);
         List<BookDto> booksDtoByUser = bookService.getBookListByUser(userId);
-        if (userDto == null) throw new NoSuchUserException("There is no user with id " + userId + " in storage");
-        if (booksDtoByUser == null) throw new NoSuchBookException("No books in storage for user with id " + userId);
+        if (userDto == null) throw new NoSuchUserException("There is no user with id " + userId + " in database");
+        if (booksDtoByUser == null) throw new NoSuchBookException("No books in database for user with id " + userId);
         userService.deleteUserById(userId);
         booksDtoByUser.forEach(bookDto -> bookService.deleteBookById(bookDto.getId()));
 

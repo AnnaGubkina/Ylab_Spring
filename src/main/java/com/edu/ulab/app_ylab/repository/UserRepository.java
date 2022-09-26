@@ -1,19 +1,24 @@
 package com.edu.ulab.app_ylab.repository;
 
-import com.edu.ulab.app_ylab.entity.User;
 
-import java.util.Map;
+import com.edu.ulab.app_ylab.entity.Person;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.repository.CrudRepository;
+import javax.persistence.LockModeType;
 
-public interface UserRepository {
 
-    void saveUser(User user);
+public interface UserRepository extends CrudRepository<Person, Long> {
 
-    User getUserById(Long id);
+    /*
+    User has books - book - started - comited status - other logic
+    User has books - book - in progress
+    User has books - book - finished
+     */
 
-    void updateUser(User user);
 
-    Map<Long, User> getAllUsers();
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Person findPersonById(Long id);
 
-    void deleteUserById(Long id);
 
 }
+

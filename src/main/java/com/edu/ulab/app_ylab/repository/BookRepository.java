@@ -1,18 +1,19 @@
 package com.edu.ulab.app_ylab.repository;
 
-import com.edu.ulab.app_ylab.dto.BookDto;
 import com.edu.ulab.app_ylab.entity.Book;
-import io.micrometer.core.instrument.Tags;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.repository.CrudRepository;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
-public interface BookRepository {
 
-    void saveBook(Book book);
+public interface BookRepository extends CrudRepository<Book, Long> {
 
-    Book getBookById(Long id);
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Book findBookById(Long id);
 
-    List<Book> getBookListByUser(Long userId);
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    List<Book> findBooksByUserIdEquals(Long userId);
 
-    void deleteBookById(Long id);
 }
