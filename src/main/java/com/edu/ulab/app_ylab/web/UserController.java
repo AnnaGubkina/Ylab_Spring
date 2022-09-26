@@ -10,8 +10,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
 import static com.edu.ulab.app_ylab.web.constant.WebConstant.REQUEST_ID_PATTERN;
@@ -21,6 +23,7 @@ import static com.edu.ulab.app_ylab.web.constant.WebConstant.RQID;
 @RestController
 @RequestMapping(value = WebConstant.VERSION_URL + "/user",
         produces = MediaType.APPLICATION_JSON_VALUE)
+@Validated
 public class UserController {
     private final UserDataFacade userDataFacade;
 
@@ -34,7 +37,7 @@ public class UserController {
                     @ApiResponse(description = "User book",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = UserBookResponse.class)))})
-    public UserBookResponse createUserWithBooks(@RequestBody UserBookRequest request,
+    public UserBookResponse createUserWithBooks(@RequestBody @Valid UserBookRequest request,
                                                 @RequestHeader(RQID) @Pattern(regexp = REQUEST_ID_PATTERN) final String requestId) {
         UserBookResponse response = userDataFacade.createUserWithBooks(request);
         log.info("Response with created user and his books: {}", response);

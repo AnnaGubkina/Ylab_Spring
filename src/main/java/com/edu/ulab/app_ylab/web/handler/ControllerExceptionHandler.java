@@ -11,6 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.Arrays;
+import java.util.Set;
+
 
 @Slf4j
 @ControllerAdvice
@@ -38,9 +43,27 @@ public class ControllerExceptionHandler {
     }
 
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<BaseWebResponse> handleConstraintViolationException(@NonNull final ConstraintViolationException exc) {
+        log.error(exc.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new BaseWebResponse(createConstraintViolationErrorMessage(exc)));
+    }
+
+
     private String createErrorMessage(Exception exception) {
         final String message = exception.getMessage();
         log.error(ExceptionHandlerUtils.buildErrorMessage(exception));
         return message;
+    }
+
+    private String createConstraintViolationErrorMessage(ConstraintViolationException exception) {
+        final Set<ConstraintViolation<?>> message = exception.getConstraintViolations();
+        log.error(ExceptionHandlerUtils.buildErrorMessage(exception));
+        return message.stream()
+                .map(ConstraintViolation::getMessage)
+                .findFirst()
+                .orElse(exception.getMessage());
+
     }
 }
