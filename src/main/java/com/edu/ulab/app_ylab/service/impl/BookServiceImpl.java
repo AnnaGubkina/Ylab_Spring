@@ -2,6 +2,7 @@ package com.edu.ulab.app_ylab.service.impl;
 
 import com.edu.ulab.app_ylab.dto.BookDto;
 import com.edu.ulab.app_ylab.entity.Book;
+import com.edu.ulab.app_ylab.exception.NoSuchBookException;
 import com.edu.ulab.app_ylab.mapper.BookMapper;
 import com.edu.ulab.app_ylab.repository.BookRepository;
 import com.edu.ulab.app_ylab.service.BookService;

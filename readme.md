@@ -1,7 +1,9 @@
-# Database for users with books 
+# CRUD app for users with books 
 ## *CRUD app*
 ## *Spring*
-## *PostgreSQL*
+## *DB - PostgreSQL*
+## *TestContainers*
+
 
 
 Функция этого приложения хранить всех пользователей и все книги, которые находятся у пользвателей

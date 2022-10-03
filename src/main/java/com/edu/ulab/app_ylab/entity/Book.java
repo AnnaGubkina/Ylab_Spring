@@ -7,25 +7,27 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-@Entity
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-@Table
+@Entity
+@Table(name = "book", schema = "ulab_edu")
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+    @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 100)
     private Long id;
 
+    @Column(nullable = false)
     private Long userId;
 
-    @NotEmpty(message = "Title field must not be empty in Book")
+    @Column(nullable = false)
     private String title;
 
-    @NotEmpty(message = "Author field must not be empty in Book")
+    @Column(nullable = false)
     private String author;
 
-    @Min(value = 2, message = "pageCount must be greater than 1")
+    @Column(nullable = false)
     private long pageCount;
 }

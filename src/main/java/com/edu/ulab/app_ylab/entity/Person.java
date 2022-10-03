@@ -9,25 +9,26 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 
-@Entity
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-@Table
+@Entity
+@Table(name = "person", schema = "ulab_edu")
 public class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+    @SequenceGenerator(name = "sequence", sequenceName = "sequence", allocationSize = 100)
     private Long id;
 
-    @Size(min = 2, max = 30, message = "Full name should be between 2 and 30 characters")
+
+    @Column(nullable = false)
     private String fullName;
 
-    @NotEmpty(message = "Please fill in the title")
+    @Column(nullable = false)
     private String title;
 
-    @Min(value = 1, message = "age must be greater than 0")
-    @Max(value = 110, message = "age must be less than 111")
+    @Column(nullable = false)
     private int age;
 
 }
